@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { TopBar } from "@/components/User/TopBar";
 import Image from "next/image";
+
+// hooks
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"
 
 // icons
 import { MdAlternateEmail } from "react-icons/md";
@@ -19,17 +22,26 @@ export default function Login() {
 
 	const [ username, setUsername ] = useState("")
 	const [ password, setPassword ] = useState("")
+ 
+	const [ error, setError] = useState("")
 
 	const { login, user } = useUser()
 
-	const Submit = (e) => {
+	const router = useRouter()
+
+	const Submit = async (e) => {
 		e.preventDefault()
 
 		console.log(username)
 		console.log(password)
 
-		login(username, password)
+		const result = await login(username, password)
 		
+		if (result) {
+			router.push("/feed")
+		} else {
+			setError("something went wrong")
+		}	
 	}
 
 	useEffect(() => {
@@ -81,6 +93,7 @@ export default function Login() {
 										<div className={focus2 ? "bg-secondary w-full h-[1px]" : "bg-white w-full h-[1px]"}/>
 									</div>
 									<Link href={"register"} className="underline text-white w-fit">Dont have an account?</Link>
+									<h1 className="text-red-500">{error && "- " + error}</h1>
 								</div>
 							</div>
 
@@ -117,8 +130,6 @@ export default function Login() {
 					</div>
 				)
 			}
-
-			
 		</div>
 
 	)
