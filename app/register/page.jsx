@@ -152,8 +152,9 @@ export default function RegisterPage() {
 						</div>
 					</form>
 				) : (
-					<div className="w-1/3 h-1/2 bg-accent self-center flex flex-col justify-center gap-10 z-20 rounded-2xl p-8 min-w-96">
-						<h1 className="text-white text-2xl font-bold self-center">Oops! Your already logged in</h1>
+					<div className="w-1/3 h-1/2 bg-accent self-center flex flex-col justify-center gap-2 z-20 rounded-2xl p-8 min-w-96">
+						<h1 className="text-white text-2xl font-bold self-center select-none">Oops! Your already logged in</h1>
+						<Link href={"/feed"} className="text-white text-2xl font-bold self-center p-2 bg-secondary rounded-2xl cursor-pointer hover:shadow-md hover:bg-red-600 select-none">Home</Link>
 						<div className="w-3/4 h-fit flex flex-col justify-center self-center">
 							<Image 
 								src="/register_image.webp"
