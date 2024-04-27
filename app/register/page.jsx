@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { TopBar } from "@/components/User/TopBar";
 import Image from "next/image";
+
+// hooks
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 // icons
 import { CiUser } from "react-icons/ci";
@@ -12,12 +15,11 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { useUser } from "@/contexts/userContext";
 
 
-
 export default function RegisterPage() {
 
 	const [ mounted, setMounted ] = useState(false)
 
-	const [ name, setName ] = useState("")
+	const [ username, setUsername ] = useState("")
 	const [ email, setEmail ] = useState("")
 	const [ password, setPassword ] = useState("")
 	const [ passwordConfirm, setPasswordConfirm ] = useState("")
@@ -27,7 +29,11 @@ export default function RegisterPage() {
 	const [ focus3, setFocus3 ] = useState(false)
 	const [ focus4, setFocus4 ] = useState(false)
 
-	const { user } = useUser()
+	const [ error, setError ] = useState("")
+
+	// hooks
+	const { user, register } = useUser()
+	const router = useRouter()
 
 	useEffect(() => {
 		setMounted(true)
@@ -36,18 +42,35 @@ export default function RegisterPage() {
 	 * perform checks on the input fields
 	 */
 	const Check = () => {
+		if (username === "") return false
 
+		if (email === "") return false
+
+		if (password === "") return false
+
+		if (passwordConfirm === "") return false
+
+		if (password !== passwordConfirm) return false
+
+		return true
 	}
 
-	const Submit = (e) => {
+	const Submit = async (e) => {
 
 		// stop redirecting
 		e.preventDefault()
-
+		console.log("called")
 		// perform the check on input fields
-		if (!Check) return
+		if (!Check()) return
+		console.log("passed")
 
-		console.log("can register")
+		const result = await register(email, password)
+
+		if (result) {
+			router.push("login")
+		} else {
+			setError("something went wrong")
+		}
 	}
 
 	return mounted && (
@@ -56,7 +79,7 @@ export default function RegisterPage() {
 
 			{
 				(user === null) ? (
-					<form className="w-1/3 h-1/2 bg-accent self-center flex justify-center gap-10 z-20 rounded-2xl p-8 min-w-96">
+					<form className="w-1/3 h-1/2 bg-accent self-center flex justify-center gap-10 z-20 rounded-2xl p-8 min-w-96" onClick={Submit}>
 						<div className="w-1/2 h-full flex flex-col gap-2 justify-between">
 
 							<div className="flex flex-col gap-8">
@@ -73,6 +96,7 @@ export default function RegisterPage() {
 												placeholder="Username"
 												onFocus={() => setFocus1(true)}
 												onBlur={() => setFocus1(false)}
+												onChange={(e) => setUsername(e.target.value)}
 											/>
 										</div>
 										<div className={focus1 ? "bg-secondary w-full h-[1px]" : "bg-white w-full h-[1px]"}/>
@@ -88,6 +112,7 @@ export default function RegisterPage() {
 												placeholder="Email"
 												onFocus={() => setFocus2(true)}
 												onBlur={() => setFocus2(false)}
+												onChange={(e) => setEmail(e.target.value)}
 											/>
 										</div>
 										<div className={focus2 ? "bg-secondary w-full h-[1px]" : "bg-white w-full h-[1px]"}/>
@@ -103,6 +128,7 @@ export default function RegisterPage() {
 												placeholder="Password"
 												onFocus={() => setFocus3(true)}
 												onBlur={() => setFocus3(false)}
+												onChange={(e) => setPassword(e.target.value)}
 											/>
 										</div>
 										<div className={focus3 ? "bg-secondary w-full h-[1px]" : "bg-white w-full h-[1px]"}/>
@@ -120,6 +146,7 @@ export default function RegisterPage() {
 												onBlur={() => setFocus4(false)}
 												autoComplete="off"
 												onPaste={(e) => {e.preventDefault()}}
+												onChange={(e) => setPasswordConfirm(e.target.value)}
 											/>
 										</div>
 										<div className={focus4 ? "bg-secondary w-full h-[1px]" : "bg-white w-full h-[1px]"}/>
@@ -134,7 +161,6 @@ export default function RegisterPage() {
 								</div>
 							</div>
 
-
 							<div>
 								<button type="submit" className="w-1/2 bg-secondary rounded-sm p-2 cursor-pointer hover:shadow-2xl hover:shadow-white">Register</button>
 							</div>
@@ -142,6 +168,7 @@ export default function RegisterPage() {
 						</div>
 
 						<div className="w-1/2 h-full flex flex-col justify-center">
+							<h1 className="text-red-500 self-center">{error && "- " + error}</h1>
 							<Image 
 								src="/register_image.webp"
 								className="w-full h- self-center"
