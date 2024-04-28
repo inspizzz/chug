@@ -10,12 +10,13 @@ import { CgProfile } from "react-icons/cg";
 import { MdHome } from "react-icons/md";
 import { CgNotes } from "react-icons/cg";
 import { RxCross1 } from "react-icons/rx";
+import { UserProfile } from '../Profile';
 
 export function TopBar({ name = "" }) {
 	const [selected, setSelected] = useState(false)
 	const [mounted, setMounted] = useState(false)
 
-	const { user, logout } = useUser()
+	const { user } = useUser()
 
 	useEffect(() => {
 		setMounted(true)
@@ -43,7 +44,7 @@ export function TopBar({ name = "" }) {
 								)
 							}
 
-							<div className="h-16 w-16 aspect-square rounded-full bg-secondary self-center" onClick={() => setSelected(!selected)} />
+							<UserProfile userId={user.id} ignoreLink={true}/>
 						</div>
 					) : (
 						<div className="h-full w-full self-center flex justify-center gap-2 text-balance">

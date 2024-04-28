@@ -12,11 +12,11 @@ export function Post({ post }) {
 
 				{/* user info and date */}
 				<div className="flex gap-2 justify-center">
-					<UserProfile user={null}/>
+					<UserProfile userId={post.sender}/>
 
 					<div className="flex flex-col justify-center gap-1">
-						<p className="text-white font-bold">Username</p>
-						<p className="text-white">Date</p>
+						<p className="text-white font-bold">{post.sender}</p>
+						<p className="text-white">{post.created}</p>
 					</div>
 				</div>
 

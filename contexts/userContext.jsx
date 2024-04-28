@@ -53,6 +53,31 @@ export const UserProvider = ({ children }) => {
 		refreshSession()
 	}, [])
 
+	// when the user changes, fetch its image
+	useEffect(() => {
+		if (user) {
+			console.log("user", user)
+			if (user.avatar !== "") {
+				getImage(user).then((url) => {
+					setImageUrl(url)
+				})
+			}
+		}
+	}, [user])
+
+	const getImage = useCallback(async (user) => {
+		const result = pb.files.getToken().then((fileToken) => {
+			console.log("got image")
+			const url = pb.files.getUrl(user, user.avatar, { 'token': fileToken });
+			return url
+		}).catch((err) => {
+			console.log("error")
+			console.log(err)
+			return ""
+		})
+
+		return result
+	}, [])
 
 	/**
 	 * Register a new user
@@ -62,6 +87,21 @@ export const UserProvider = ({ children }) => {
 			return true
 		}).catch((err) => {
 			console.log("registering errored")
+			console.log(err)
+			return false
+		})
+
+		return result
+	}, [])
+
+	/**
+	 * fetch an arbitrary users data
+	 */
+	const fetchUser = useCallback(async (userId) => {
+		const result = await pb.collection("users").getFirstListItem(`id="${userId}"`).then((user) => {
+			return user
+		}).catch((err) => {
+			console.log("fetching user errored")
 			console.log(err)
 			return false
 		})
@@ -139,7 +179,7 @@ export const UserProvider = ({ children }) => {
 
 	return (
 		<UserContext.Provider
-			value={{ register, login, logout, addMailingList, refreshSession, user, token, pb, imageUrl, error }}
+			value={{ register, login, logout, addMailingList, refreshSession, fetchUser, getImage,  user, token, pb, imageUrl, error }}
 		>
 			{children}
 		</UserContext.Provider>
