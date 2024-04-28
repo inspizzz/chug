@@ -3,7 +3,7 @@ import { UserProfile } from "@/components/User/Profile";
 // icons
 import { CiCircleInfo } from "react-icons/ci";
 
-export function Post({ content }) {
+export function Post({ post }) {
 	return (
 		<div className="bg-accent rounded-2xl p-2 flex flex-col gap-2">
 
@@ -28,7 +28,9 @@ export function Post({ content }) {
 
 			{/* post content */}
 			<div>
-				<p className="text-white w-full h-96 bg-white rounded-2xl" />
+				<div className="text-white w-full h-96 bg-white rounded-2xl">
+					<p className="text-black">{post.content}</p>
+				</div>
 			</div>
 
 		</div>

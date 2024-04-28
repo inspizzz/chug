@@ -5,7 +5,6 @@ import { TopBar } from "@/components/User/TopBar";
 // icons
 import { IoIosAddCircleOutline } from "react-icons/io";
 
-
 export default function FeedPage() {
 	return (
 		<div className="h-full w-full bg-primary flex flex-col gap-4">
