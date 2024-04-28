@@ -44,7 +44,7 @@ export function TopBar({ name = "" }) {
 								)
 							}
 
-							<UserProfile userId={user.id} ignoreLink={true}/>
+							<UserProfile userId={user.id} ignoreLink={true} callback={() => setSelected(!selected)}/>
 						</div>
 					) : (
 						<div className="h-full w-full self-center flex justify-center gap-2 text-balance">

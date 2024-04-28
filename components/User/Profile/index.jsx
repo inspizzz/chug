@@ -11,7 +11,7 @@ import { CiUser } from "react-icons/ci";
 
 
 
-export function UserProfile({ userId=null, ignoreLink=false }) {
+export function UserProfile({ userId=null, ignoreLink=false, callback }) {
 
 	const { fetchUser, getImage } = useUser()
 
@@ -36,7 +36,7 @@ export function UserProfile({ userId=null, ignoreLink=false }) {
 	}, [])
 
 	return (
-		<div className="w-16 h-16 rounded-full">
+		<div className="w-16 h-16 rounded-full" onClick={callback && callback}>
 			{
 				ignoreLink ? (
 					<>

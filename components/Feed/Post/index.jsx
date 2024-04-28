@@ -1,4 +1,5 @@
 import { UserProfile } from "@/components/User/Profile";
+import Link from "next/link";
 
 // icons
 import { CiCircleInfo } from "react-icons/ci";
@@ -15,7 +16,7 @@ export function Post({ post }) {
 					<UserProfile userId={post.sender}/>
 
 					<div className="flex flex-col justify-center gap-1">
-						<p className="text-white font-bold">{post.sender}</p>
+						<Link href={`profiles/${post.sender}`} className="text-white font-bold hover:underline cursor-pointer select-none">{post.sender}</Link>
 						<p className="text-white">{post.created}</p>
 					</div>
 				</div>
